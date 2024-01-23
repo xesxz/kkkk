@@ -7,7 +7,13 @@ import axios from 'axios';
 
 // const { Search } = Input;
 
+console.log(import.meta.env);
+
 const App = () => {
+  const instance = axios.create({
+    baseURL: import.meta.env.VITE_APP_BASE_URL,
+  });
+
   const [copied, setCopy] = useState(false);
   const [content, setContent] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -37,7 +43,7 @@ const App = () => {
 
   const getData = async () => {
     try {
-      const response = await axios.get('http://localhost:3003/like');
+      const response = await instance.get('/like');
       const { data } = response.data;
       setList(data);
     } catch (error) {
@@ -66,8 +72,8 @@ const App = () => {
 
   const submit = async () => {
     try {
-      const { data } = await axios({
-        url: 'http://localhost:3003/like/create',
+      const { data } = await instance({
+        url: '/like/create',
         data: {
           name: inputValue,
         },
